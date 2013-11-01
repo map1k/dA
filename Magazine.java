@@ -13,23 +13,19 @@ public class Magazine    //класс магазина
 
     Magazine(int m)      //конструкотр магазина с заданым кол-вом загруженых патроном и емкостью
     {
-        if(30 ==  m)
+        if(m ==  30)
         {
             this.max = m;
-            this.bullet = 30;
-        }
-        if(45 ==  m)
+            this.bullet = m;
+        } else if(45 ==  m)
         {
             this.max = m;
-            this.bullet = 45;
-        }
-        if(60 ==  m)
+            this.bullet = m;
+        }  else if(60 ==  m)
         {
             this.max = m;
-            this.bullet = 60;
-        }
-        else
-        {
+            this.bullet = m;
+        } else {
             this.max = 30;
             this.bullet = 0;
         }
@@ -37,7 +33,7 @@ public class Magazine    //класс магазина
 
     int getBullets()
     {
-         return bullet;
+         return bullet--;
     }
 
     void dischargeBullets(int b)  //изьятие патронов

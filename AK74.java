@@ -15,6 +15,23 @@ public class AK74
     boolean bayonet;   //штык-нож
     ReflexSight reflexSight;
 
+    public void setTriggerPull(boolean triggerPull)
+    {
+        this.triggerPull = triggerPull;
+    }
+
+    boolean triggerPull = false;
+
+    boolean isReady() {
+        try {
+        return mag != null && mag.bullet > 0 && chargingHandle && trigger > 0;
+        } catch (NullPointerException e) {
+            System.out.println("Add magazine.");
+        }
+        return false;
+    }
+   // int bulletsInMag;
+
     public void setReflexSight(ReflexSight reflexSight)
     {
         this.reflexSight = reflexSight;
@@ -27,68 +44,56 @@ public class AK74
     public AK74(Magazine mag)    //конструктор с заданым магазином
     {
         this.mag = mag;
+       // bulletsInMag = mag.getBullets();
+    }
+    void pullTrigger ()
+    {
+    switch (trigger)
+    {
+        case ( 0) :
+        break; //do nothing
+        case ( 1) :
+        shoot();
+        break;
+        case ( 2) :
+        while (triggerPull) shoot();
+        break;
+    }
     }
 
     public void shoot()       //метод выстрела
-    {   try {
-        if(mag != null && mag.bullet > 0 && chargingHandle && trigger > 0)
-            if (trigger == 1)
-                System.out.println("BANG!"); //звук выстрела
-            if(trigger == 2)
-                while (true)
-                {
-
-                    if(mag.bullet > 0){
-                        System.out.println("BANG!"); //звук выстрела
-                        mag.bullet--;
-                        try
-                        {
-                            Thread.sleep(100);  //задержка между выстрелами, при 600 выстрелов минуту
-                        }
-                        catch (InterruptedException e)
-                        {
-                           // System.out.println("1");
-
-                        }
-                    }
-                }
-    } catch (NullPointerException e) {
-        System.out.println("Add magazine.");
-    }
-    }
-
-    public void shoot(int q)       //метод выстрела с заданым кол-вом раз
-    {    try {
-        if(mag != null && mag.bullet > 0 && chargingHandle && trigger > 0)
-            if (trigger == 1)
-                System.out.println("BANG!"); //звук выстрела
-            if(trigger == 2)
-            for(int t = 0; t < q; t++)
+    {
+        if(isReady())
+            if (chargingHandle )
             {
-
-                if(mag.bullet > 0){
-                    System.out.println("BANG!"); //звук выстрела
-                    mag.bullet--;
-                    try
-                    {
-                        Thread.sleep(100);  //задержка между выстрелами, при 600 выстрелов минуту
-                    }
-                    catch (InterruptedException e)
-                    {
-                        // System.out.println("1");
-
-                    }
+        int bullet = mag.getBullets(); //этот метод гарантированно уменьшает количество патрон в магазине
+        if (bullet > 0) { System.out.println("BANG!");
+                try
+                {
+                    Thread.sleep(100);  //задержка между выстрелами, при 600 выстрелов минуту
                 }
+                catch (InterruptedException e)
+                {
+                    // System.out.println("1");
+
+                } }
+        else chargingHandle = false;
             }
-    } catch (NullPointerException e) {
-        System.out.println("Add magazine.");
     }
-    }
+
 
     public void setMag(Magazine mag)   //добавление магазина
     {
         this.mag = mag;
+      //  bulletsInMag = mag.getBullets();
     }
+
+    public void addMoreB (int aB)   //добавление патронов в магазин
+    {
+        mag.loadBullet(aB);
+        //bulletsInMag = mag.getBullets();
+    }
+
 
     public void setTriggerToOff()     //установка предохранителя
     {
