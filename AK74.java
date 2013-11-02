@@ -9,11 +9,11 @@ package dataArt;
  */
 public class AK74
 {
-    int trigger = 0;                   //предохронитель
-    Magazine mag;     //магазин по умолчанию
-    boolean chargingHandle = false;   //затвор
-    boolean bayonet;   //штык-нож
-    ReflexSight reflexSight;
+    private int trigger = 0; //предохронитель
+    private Magazine mag;     //магазин по умолчанию
+    private boolean chargingHandle = false;   //затвор
+    private boolean bayonet;   //штык-нож
+    private ReflexSight reflexSight;    //Прицел
 
     public void setTriggerPull(boolean triggerPull)
     {
@@ -30,7 +30,7 @@ public class AK74
         }
         return false;
     }
-   // int bulletsInMag;
+
 
     public void setReflexSight(ReflexSight reflexSight)
     {
@@ -50,12 +50,12 @@ public class AK74
     {
     switch (trigger)
     {
-        case ( 0) :
+        case (0) :
         break; //do nothing
-        case ( 1) :
+        case (1) :
         shoot();
         break;
-        case ( 2) :
+        case (2) :
         while (triggerPull) shoot();
         break;
     }
