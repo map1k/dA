@@ -7,7 +7,7 @@ package dataArt;
  * Time: 22:47
  * To change this template use File | Settings | File Templates.
  */
-public class AK74
+public class AK74 extends Thread
 {
     private int trigger = 0; //предохронитель
     private Magazine mag;     //магазин по умолчанию
@@ -15,12 +15,12 @@ public class AK74
     private boolean bayonet;   //штык-нож
     private ReflexSight reflexSight;    //Прицел
 
-    public void setTriggerPull(boolean triggerPull)
+    public void setTriggerOff()
     {
-        this.triggerPull = triggerPull;
+        interrupt();
     }
 
-    boolean triggerPull = false;
+
 
     boolean isReady() {
         try {
@@ -39,11 +39,13 @@ public class AK74
 
     public AK74()             //конструктор по умолчанию
     {
+        start();
     }
 
     public AK74(Magazine mag)    //конструктор с заданым магазином
     {
         this.mag = mag;
+        start();
        // bulletsInMag = mag.getBullets();
     }
     void pullTrigger ()
@@ -56,7 +58,10 @@ public class AK74
         shoot();
         break;
         case (2) :
-        while (triggerPull) shoot();
+        if(true) for(;;) {
+            shoot();
+            if(!isInterrupted()) break;
+        }
         break;
     }
     }
