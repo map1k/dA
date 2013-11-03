@@ -14,6 +14,7 @@ public class AK74 extends Thread
     private boolean chargingHandle = false;   //затвор
     private boolean bayonet;   //штык-нож
     private ReflexSight reflexSight;    //Прицел
+    private volatile boolean stopS = false;
 
     public void setTriggerOff()
     {
@@ -24,7 +25,7 @@ public class AK74 extends Thread
 
     boolean isReady() {
         try {
-        return mag != null && mag.bullet > 0 && chargingHandle && trigger > 0;
+        return mag != null  && chargingHandle && trigger > 0;
         } catch (NullPointerException e) {
             System.out.println("Add magazine.");
         }
@@ -48,7 +49,7 @@ public class AK74 extends Thread
         start();
        // bulletsInMag = mag.getBullets();
     }
-    void pullTrigger ()
+    public void run ()
     {
     switch (trigger)
     {
@@ -58,10 +59,8 @@ public class AK74 extends Thread
         shoot();
         break;
         case (2) :
-        if(true) for(;;) {
+        while ( !isInterrupted() )
             shoot();
-            if(!isInterrupted()) break;
-        }
         break;
     }
     }
@@ -72,17 +71,26 @@ public class AK74 extends Thread
             if (chargingHandle )
             {
         int bullet = mag.getBullets(); //этот метод гарантированно уменьшает количество патрон в магазине
-        if (bullet > 0) { System.out.println("BANG!");
+        if (bullet > 0)
+        {
+            //System.out.println(mag.getBullets());
+            System.out.println("BANG!");
+
                 try
                 {
                     Thread.sleep(100);  //задержка между выстрелами, при 600 выстрелов минуту
                 }
                 catch (InterruptedException e)
                 {
-                    // System.out.println("1");
+                     System.out.println("1");
 
-                } }
-        else chargingHandle = false;
+                }
+        }
+        else
+        {
+            System.out.println("Clats, no more bullets");
+            chargingHandle = false;
+        }
             }
     }
 
@@ -132,6 +140,12 @@ public class AK74 extends Thread
             System.out.println("AAA, DIE!");
         else
             System.out.println("Bayonet is not added");
+    }
+
+    public void stopShoot()
+    {
+        Thread.currentThread().interrupt();
+        stopS = true;
     }
 }
 
