@@ -17,11 +17,11 @@ public class AK74 extends Thread
         ak74.setTriggerToFullAutomatic();
         ak74.pullChargingHandle();
         ak74.pullTheTrigger();
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         ak74.setTriggerOff();
     }
 
-    private int trigger = 0; //предохронитель
+    private int trigger = 1; //предохронитель
     private Magazine mag;     //магазин по умолчанию
     private boolean chargingHandle = false;   //затвор
     private boolean bayonet;   //штык-нож
@@ -51,15 +51,11 @@ public class AK74 extends Thread
     }
 
     public AK74()             //конструктор по умолчанию
-    {
-
-    }
+    { }
 
     public AK74(Magazine mag)    //конструктор с заданым магазином
     {
         this.mag = mag;
-
-       // bulletsInMag = mag.getBullets();
     }
 
     public void pullTheTrigger ()
@@ -96,7 +92,6 @@ public class AK74 extends Thread
         int bullet = mag.getBullets(); //этот метод гарантированно уменьшает количество патрон в магазине
         if (bullet > 0)
         {
-            //System.out.println(mag.getBullets());
             System.out.println("BANG!");
             Thread.sleep(100);  //задержка между выстрелами, при 600 выстрелов минуту
         }
@@ -112,13 +107,11 @@ public class AK74 extends Thread
     public void setMag(Magazine mag)   //добавление магазина
     {
         this.mag = mag;
-      //  bulletsInMag = mag.getBullets();
     }
 
     public void addMoreB (int aB)   //добавление патронов в магазин
     {
         mag.loadBullet(aB);
-        //bulletsInMag = mag.getBullets();
     }
 
 
@@ -140,7 +133,7 @@ public class AK74 extends Thread
     void pullChargingHandle ()    //взведение затвора перед стрельбой
     {
 
-        chargingHandle = true;
+        chargingHandle = false;
     }
 
     public void addBayonet()     //добавление штык-ножа
