@@ -21,7 +21,7 @@ public class AK74 extends Thread
         ak74.setTriggerOff();
     }
 
-    private int trigger = 1; //предохронитель
+    private int trigger = 0; //предохронитель
     private Magazine mag;     //магазин по умолчанию
     private boolean chargingHandle = false;   //затвор
     private boolean bayonet;   //штык-нож
@@ -133,7 +133,7 @@ public class AK74 extends Thread
     void pullChargingHandle ()    //взведение затвора перед стрельбой
     {
 
-        chargingHandle = false;
+        chargingHandle = true;
     }
 
     public void addBayonet()     //добавление штык-ножа
