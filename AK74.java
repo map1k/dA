@@ -9,12 +9,24 @@ package dataArt;
  */
 public class AK74 extends Thread
 {
+    public static void main(String[] args) throws InterruptedException
+    {
+        AK74 ak74 = new AK74();
+        Magazine m = new Magazine(30);
+        ak74.setMag(m);
+        ak74.setTriggerToFullAutomatic();
+        ak74.pullChargingHandle();
+        ak74.pullTheTrigger();
+        Thread.sleep(1000);
+        ak74.setTriggerOff();
+    }
+
     private int trigger = 0; //предохронитель
     private Magazine mag;     //магазин по умолчанию
     private boolean chargingHandle = false;   //затвор
     private boolean bayonet;   //штык-нож
     private ReflexSight reflexSight;    //Прицел
-    private volatile boolean stopS = false;
+    //private volatile boolean stopS = false;
 
     public void setTriggerOff()
     {
@@ -40,17 +52,23 @@ public class AK74 extends Thread
 
     public AK74()             //конструктор по умолчанию
     {
-        start();
+
     }
 
     public AK74(Magazine mag)    //конструктор с заданым магазином
     {
         this.mag = mag;
-        start();
+
        // bulletsInMag = mag.getBullets();
+    }
+
+    public void pullTheTrigger ()
+    {
+        start();
     }
     public void run ()
     {
+        try {
     switch (trigger)
     {
         case (0) :
@@ -63,9 +81,14 @@ public class AK74 extends Thread
             shoot();
         break;
     }
+        }
+            catch (InterruptedException e)
+            {
+                Thread.currentThread().interrupt(); // very important
+            }
     }
 
-    public void shoot()       //метод выстрела
+    public void shoot() throws InterruptedException       //метод выстрела
     {
         if(isReady())
             if (chargingHandle )
@@ -75,23 +98,14 @@ public class AK74 extends Thread
         {
             //System.out.println(mag.getBullets());
             System.out.println("BANG!");
-
-                try
-                {
-                    Thread.sleep(100);  //задержка между выстрелами, при 600 выстрелов минуту
-                }
-                catch (InterruptedException e)
-                {
-                     System.out.println("1");
-
-                }
+            Thread.sleep(100);  //задержка между выстрелами, при 600 выстрелов минуту
         }
         else
         {
             System.out.println("Clats, no more bullets");
             chargingHandle = false;
         }
-            }
+        }
     }
 
 
@@ -141,13 +155,5 @@ public class AK74 extends Thread
         else
             System.out.println("Bayonet is not added");
     }
-
-    public void stopShoot()
-    {
-        Thread.currentThread().interrupt();
-        stopS = true;
-    }
 }
-
-
 
